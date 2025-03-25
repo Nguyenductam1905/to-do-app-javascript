@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function run1() {
+            return new Date('2023-12-24T10:10:20Z') // ('YYYY-MM-DDTHH:MM:SSZ')
+        }
+        function run2(){
+            const timeStamp = Date.UTC(2023, 11, 20, 10, 10, 20); // (Year, Month, Day, Hour, Minute, Second)
+            return new Date(timeStamp);
+        }
+        function run3(){
+            const currentTimestamp = Date.now();
+            const targetTimestamp = Date.UTC(2023, 11, 24, 10, 10, 20);
+    
+            const difference = targetTimestamp - currentTimestamp;
+    
+            return new Date(currentTimestamp + difference);
+        }
+
+        // Sample usage
+        console.log(run1()); // Tương đương: Sun Dec 24 2023 10:10:20 GMT+0000 (UTC)
+        console.log(run2()); // Tương đương: Sun Dec 20 2023 10:10:20 GMT+0000 (UTC)
+        console.log(run3()); // Tương đương: Sun Dec 24 2023 10:10:20 GMT+0000 (UTC)
+    </script>
+</body>
+</html>
