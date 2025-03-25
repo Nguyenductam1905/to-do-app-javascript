@@ -134,7 +134,7 @@ main {
     <h1 class="page-heading">Create your Todo-List</h1>
 
     <!-- Form -->
-    <form action="" class="todo-form">
+    <form id="todo-form" action="" class="todo-form">
         <input
             type="text"
             id="todo-input"
@@ -150,7 +150,7 @@ main {
         <!-- Render task items here! -->
     </ul>
     <script>
-        
+
         const $ = document.querySelector.bind(document)
         const $$ = document.querySelectorAll.bind(document)
 
@@ -164,14 +164,28 @@ main {
             { title: "Build a Todo App", completed: true },
         ];
 
-        submit.addEventListener('click', function(e){ 
-            e.stopPropagation()
+        
+        const html = tasks.map(task => `
+            <li class="task-item ${task.completed? "completed":""}">
+                <span class="task-title">${task.title}</span>
+                <div class="task-action">
+                    <button class="task-btn edit">Edit</button>
+                    <button class="task-btn done">${
+                    task.completed ?"Mark as undone" : "Mark as done"
+                    }</button>
+                    <button class="task-btn delete">Delete</button>
+                </ div>
+            </li>
+        `).join("")
+        function render(){
+            taskList.innerHTML = html;
+        }
+        console.log(todoForm)
+        todoForm.onsubmit = function(e){
+            e.preventDefault()
             console.log(Math.random())
-           
-        })
-        
-        console.log(taskList)
-        
+        }
+        render()
 
     </script>
 </main>
