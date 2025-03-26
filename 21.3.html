@@ -125,6 +125,12 @@ main {
     cursor: pointer;
     text-decoration: underline;
 }
+.empty-message {
+    list-style: none;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
     </style>
 </head>
 <body>
@@ -160,20 +166,26 @@ main {
         const tasks = [];
         
         //Xử lý tác vụ phần tử nhiệm vụ
-        taskList.onclick = function(e){
+        function handleTaskActions(e){
             const taskItem = e.target.closest(".task-item")
             const taskIndex = +taskItem.getAttribute("task-index")
             const task = tasks[taskIndex]
             if(e.target.closest(".edit")){
                 const newTitle = prompt('Enter the new task title:', task.title)
                 task.title = newTitle
-                render()
+                renderTasks()
             }
             else if(e.target.closest(".done")){
-                console.log(taskItem)
+                task.completed = !task.completed
+                renderTasks()
             }
             else if(e.target.closest(".delete")){
-                console.log("Delete")
+                if(confirm("Có chắc chắn xoá không ?")){
+                    tasks.splice(taskIndex,1)
+                    console.log(tasks)
+                    renderTasks()
+                }
+
             }
         }
         function handleTask(){
@@ -181,7 +193,7 @@ main {
         }
 
         //add nhiệm vụ
-        todoForm.onsubmit = function(e){
+        function addTask(e){
             e.preventDefault();
             const value = todoInput.value.trim();
             if(!value){
@@ -192,11 +204,18 @@ main {
             const newTask = {title: value, completed: false}
             tasks.unshift(newTask)
             todoInput.value = ""
-            render()
+            renderTasks()
             console.log(value)
         }
-        // Thực hiện render ra màn hình
-        function render(){
+
+
+        // Thực hiện renderTasks ra màn hình
+    function renderTasks(){
+            // No tasks available
+        if(tasks.length === 0 ){
+            taskList.innerHTML = '<li class = "empty-message">No tasks available.</li>';
+            return;
+        }
         // gán phần tử cho html từ các task
         const html = tasks.map((task, index) => `
             <li class="task-item ${task.completed? "completed":""}" task-index = "${index}">
@@ -212,8 +231,9 @@ main {
         `).join("")
             taskList.innerHTML = html;
         }
-        render()
-
+        renderTasks()
+        todoForm.addEventListener('submit', addTask)
+        taskList.addEventListener('click', handleTaskActions)
     </script>
 </main>
 </body>
